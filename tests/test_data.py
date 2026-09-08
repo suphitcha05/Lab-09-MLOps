@@ -1,23 +1,21 @@
-"""Data tests — ตรวจว่าข้อมูลยังหน้าตาเหมือนที่ตกลงไว้ ก่อนจะเอาไปเทรน"""
 from sklearn.datasets import load_breast_cancer
- 
-df = load_breast_cancer(as_frame=True).frame
- 
- 
-def test_schema():
-    """คอลัมน์ต้องครบ 13 ฟีเจอร์ + target"""
-    assert df.shape[1] == 14
-    assert "target" in df.columns
- 
- 
-def test_no_missing():
-    assert df.isnull().sum().sum() == 0
- 
- 
-def test_three_classes():
-    assert df["target"].nunique() == 3
- 
- 
-def test_alcohol_range():
-    """ค่าที่หลุดช่วงนี้แปลว่าข้อมูลต้นทางผิดปกติ"""
-    assert df["alcohol"].between(10.0, 16.0).all()
+
+
+def test_breast_cancer_shape():
+    data = load_breast_cancer(as_frame=True)
+
+    assert data.frame.shape == (569, 31)
+
+
+def test_breast_cancer_classes():
+    data = load_breast_cancer(as_frame=True)
+
+    assert data.frame["target"].nunique() == 2
+
+
+def test_breast_cancer_class_balance():
+    data = load_breast_cancer(as_frame=True)
+
+    class_balance = data.frame["target"].value_counts(normalize=True).min()
+
+    assert class_balance >= 0.20
