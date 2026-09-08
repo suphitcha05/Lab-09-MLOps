@@ -1,6 +1,7 @@
 import mlflow
 from sklearn.datasets import load_breast_cancer
 
+
 def load_and_predict():
     """
     Loads the cancer classifier using the staging alias
